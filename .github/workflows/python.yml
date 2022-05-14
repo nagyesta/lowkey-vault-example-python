@@ -32,6 +32,8 @@ jobs:
     - name: Start Lowkey Vault
       run: |
         docker-compose up -d
+        sleep 5
+        docker ps
     - name: Test with pytest
       env:
         REQUESTS_CA_BUNDLE: lowkeyvault.pem
