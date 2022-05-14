@@ -17,8 +17,10 @@ a key is used for encrypt/decrypt operations and database connection specific cr
 
 ### Usage
 
-1. Start Lowkey Vault by following the steps [here](https://github.com/nagyesta/lowkey-vault#quick-start-guide).
-   1. Make sure to use port ```443``` until [this issue](https://github.com/Azure/azure-sdk-for-python/issues/24446) in the Python client is solved. 
+1. Start Lowkey Vault 
+   1. Either by following the steps [here](https://github.com/nagyesta/lowkey-vault#quick-start-guide).
+      1. Make sure to use port ```443``` until [this issue](https://github.com/Azure/azure-sdk-for-python/issues/24446) in the Python client is solved.
+   2. Or running ```docker-compose up -d```
 2. Set ```REQUESTS_CA_BUNDLE``` environment variable to reference [lowkeyvault.pem](lowkeyvault.pem)
 3. Run the tests
 

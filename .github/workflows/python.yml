@@ -30,10 +30,8 @@ jobs:
         python -m pip install pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Start Lowkey Vault
-      env:
-        LOWKEY_ARGS: "--server.port=443"
       run: |
-        docker run --rm --name lowkey-vault -e LOWKEY_ARGS -d -p 443:443 nagyesta/lowkey-vault:1.4.0
+        docker-compose up -d
     - name: Test with pytest
       env:
         REQUESTS_CA_BUNDLE: lowkeyvault.pem
@@ -42,4 +40,4 @@ jobs:
     - name: Stop container
       if: always()
       run: |
-        docker stop lowkey-vault
+        docker-compose down
