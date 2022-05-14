@@ -12,8 +12,8 @@ a key is used for encrypt/decrypt operations and database connection specific cr
 
 * [Key "repository"](src/azure_key_repository.py)
 * [Secret "repository"](src/azure_secret_repository.py)
-* [Empty credentials for connecting to Lowkey Vault](test/noop_credential.py)
-* [Tests](test/test.py)
+* [Empty credentials for connecting to Lowkey Vault](tests/noop_credential.py)
+* [Tests](tests/test.py)
 
 ### Usage
 

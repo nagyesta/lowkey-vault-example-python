@@ -9,7 +9,7 @@ from src.azure_key_repository import AzureKeyRepository
 from src.azure_secret_repository import AzureSecretRepository
 
 
-class TestStringMethods(unittest.TestCase):
+class TestRepository(unittest.TestCase):
 
     def test_calling_encrypt_then_decrypt_should_return_original_input_when_called(self):
         # given
