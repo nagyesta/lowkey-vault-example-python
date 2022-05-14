@@ -33,7 +33,7 @@ jobs:
       env:
         LOWKEY_ARGS: "--server.port=443"
       run: |
-        docker run --rm --name lowkey-vault -e LOWKEY_ARGS -d -p 443:8443 nagyesta/lowkey-vault:1.4.0
+        docker run --rm --name lowkey-vault -e LOWKEY_ARGS -d -p 443:443 nagyesta/lowkey-vault:1.4.0
     - name: Test with pytest
       env:
         REQUESTS_CA_BUNDLE: lowkeyvault.pem
