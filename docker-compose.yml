@@ -1,0 +1,10 @@
+version: "2"
+
+services:
+  lowkey-vault:
+    container_name: lowkey-vault
+    image: nagyesta/lowkey-vault:1.4.1
+    ports:
+      - "443:443"
+    environment:
+      LOWKEY_ARGS: "--server.port=443"
