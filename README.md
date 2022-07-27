@@ -25,6 +25,9 @@ a key is used for encrypt/decrypt operations and database connection specific cr
 2. Set ```REQUESTS_CA_BUNDLE``` environment variable to reference [lowkeyvault.pem](lowkeyvault.pem)
 3. Run the tests
 
+Note: In order to better understand what is needed in general to make similar examples work, please find a generic overview 
+[here](https://github.com/nagyesta/lowkey-vault/wiki/Example:-How-can-you-use-Lowkey-Vault-in-your-tests).
+
 ### Note
 
 This is my very first Python project after using it for 2-3 hours, please have mercy when
