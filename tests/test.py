@@ -16,7 +16,7 @@ class TestRepository(unittest.TestCase):
         secret_message: str = "a secret message"
         key_name: str = "rsa-key"
         credential: TokenCredential = NoopCredential()
-        key_client: KeyClient = KeyClient(vault_url="https://localhost", credential=credential)
+        key_client: KeyClient = KeyClient(vault_url="https://localhost:8443", credential=credential)
         key_client.create_rsa_key(
             name=key_name, size=2048, key_operations=[
                 KeyOperation.encrypt, KeyOperation.decrypt, KeyOperation.wrap_key, KeyOperation.unwrap_key])
@@ -40,7 +40,7 @@ class TestRepository(unittest.TestCase):
         username: str = "admin"
         password: str = "s3cr3t"
         credential: TokenCredential = NoopCredential()
-        secret_client: SecretClient = SecretClient(vault_url="https://localhost", credential=credential)
+        secret_client: SecretClient = SecretClient(vault_url="https://localhost:8443", credential=credential)
         secret_client.set_secret(name=secret_database, value=database)
         secret_client.set_secret(name=secret_username, value=username)
         secret_client.set_secret(name=secret_password, value=password)
