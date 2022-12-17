@@ -1,7 +1,7 @@
 ![LowkeyVault](https://raw.githubusercontent.com/nagyesta/lowkey-vault/main/.github/assets/LowkeyVault-logo-full.png)
 
 [![GitHub license](https://img.shields.io/github/license/nagyesta/lowkey-vault-example-python?color=informational)](https://raw.githubusercontent.com/nagyesta/lowkey-vault-example-python/main/LICENSE)
-[![Python package](https://img.shields.io/github/workflow/status/nagyesta/lowkey-vault-example-python/Python%20package?logo=github)](https://github.com/nagyesta/lowkey-vault-example-python/actions/workflows/python.yml)
+[![Python package](https://img.shields.io/github/actions/workflow/status/nagyesta/lowkey-vault-example-python/python.yml?logo=github&branch=main)](https://github.com/nagyesta/lowkey-vault-example-python/actions/workflows/python.yml)
 [![Lowkey secure](https://img.shields.io/badge/lowkey-secure-0066CC)](https://github.com/nagyesta/lowkey-vault)
 
 # Lowkey Vault - Example Python
