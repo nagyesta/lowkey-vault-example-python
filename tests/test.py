@@ -19,7 +19,8 @@ class TestRepository(unittest.TestCase):
         key_client: KeyClient = KeyClient(
             vault_url="https://localhost:8443",
             credential=credential,
-            verify_challenge_resource=False
+            verify_challenge_resource=False,
+            api_version="7.3"
         )
         key_client.create_rsa_key(
             name=key_name, size=2048, key_operations=[
@@ -47,7 +48,8 @@ class TestRepository(unittest.TestCase):
         secret_client: SecretClient = SecretClient(
             vault_url="https://localhost:8443",
             credential=credential,
-            verify_challenge_resource=False
+            verify_challenge_resource=False,
+            api_version="7.3"
         )
         secret_client.set_secret(name=secret_database, value=database)
         secret_client.set_secret(name=secret_username, value=username)
