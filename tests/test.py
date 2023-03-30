@@ -1,10 +1,14 @@
 import unittest
 
 from azure.core.credentials import TokenCredential
+from azure.keyvault.certificates import CertificateClient, CertificatePolicy, KeyVaultCertificate
 from azure.keyvault.keys import KeyClient, KeyOperation
 from azure.keyvault.secrets import SecretClient
+from cryptography.hazmat.primitives.asymmetric.ec import EllipticCurvePrivateKey
+from cryptography.x509 import Certificate
 
 from noop_credential import NoopCredential
+from src.azure_certificate_repository import AzureCertificateRepository
 from src.azure_key_repository import AzureKeyRepository
 from src.azure_secret_repository import AzureSecretRepository
 
@@ -34,7 +38,7 @@ class TestRepository(unittest.TestCase):
 
         # then
         key_client.close()
-        self.assertEqual(decrypted, secret_message)
+        self.assertEqual(secret_message, decrypted)
 
     def test_get_database_username_and_password_should_return_original_input_when_called(self):
         # given
@@ -65,9 +69,50 @@ class TestRepository(unittest.TestCase):
 
         # then
         secret_client.close()
-        self.assertEqual(db, database)
-        self.assertEqual(usr, username)
-        self.assertEqual(pwd, password)
+        self.assertEqual(database, db)
+        self.assertEqual(username, usr)
+        self.assertEqual(password, pwd)
+
+    def test_get_certificate_and_get_key_should_return_generated_cert_and_key_when_called(self):
+        # given
+        certificate_name: str = "certificate"
+        credential: TokenCredential = NoopCredential()
+        secret_client: SecretClient = SecretClient(
+            vault_url="https://localhost:8443",
+            credential=credential,
+            verify_challenge_resource=False,
+            api_version="7.3"
+        )
+        certificate_client: CertificateClient = CertificateClient(
+            vault_url="https://localhost:8443",
+            credential=credential,
+            verify_challenge_resource=False,
+            api_version="7.3"
+        )
+
+        subject_name: str = "CN=example.com"
+        policy: CertificatePolicy = CertificatePolicy(
+            issuer_name="Self",
+            subject=subject_name,
+            key_curve_name="P-256",
+            key_type="EC",
+            validity_in_months=12,
+            content_type="application/x-pkcs12"
+        )
+        certificate_client.begin_create_certificate(certificate_name=certificate_name, policy=policy).wait()
+        certificate_client.close()
+
+        under_test: AzureCertificateRepository = AzureCertificateRepository(
+            secret_client=secret_client, secret_name_certificate=certificate_name)
+
+        # when
+        key: EllipticCurvePrivateKey = under_test.get_key()
+        cert: Certificate = under_test.get_certificate()
+
+        # then
+        secret_client.close()
+        self.assertEqual(subject_name, cert.subject.rdns[0].rfc4514_string())
+        self.assertEqual("secp256r1", key.curve.name)
 
 
 if __name__ == '__main__':
