@@ -7,12 +7,14 @@
 # Lowkey Vault - Example Python
 
 This is an example for [Lowkey Vault](https://github.com/nagyesta/lowkey-vault). It demonstrates a basic scenario where
-a key is used for encrypt/decrypt operations and database connection specific credentials.
+a key is used for encrypt/decrypt operations and database connection specific credentials as well as getting a PKCS12 
+store with a certificate and matching private key inside.
 
 ### Points of interest
 
 * [Key "repository"](src/azure_key_repository.py)
 * [Secret "repository"](src/azure_secret_repository.py)
+* [Certificate "repository"](src/azure_certificate_repository.py)
 * [Empty credentials for connecting to Lowkey Vault](tests/noop_credential.py)
 * [Tests](tests/test.py)
 
@@ -29,5 +31,5 @@ Note: In order to better understand what is needed in general to make similar ex
 
 ### Note
 
-This is my very first Python project after using it for 2-3 hours, please have mercy when
-commenting on code quality!
+I am not a professional Python developer. Please do not judge me by the code quality. I am open to any suggestions and
+improvements.
