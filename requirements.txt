@@ -1,4 +1,4 @@
  azure-keyvault-certificates==4.7.0
  azure-keyvault-secrets==4.7.0
  azure-keyvault-keys==4.8.0
- cryptography==40.0.1
+ cryptography==40.0.2
