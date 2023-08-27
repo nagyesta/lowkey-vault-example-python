@@ -15,16 +15,25 @@ store with a certificate and matching private key inside.
 * [Key "repository"](src/azure_key_repository.py)
 * [Secret "repository"](src/azure_secret_repository.py)
 * [Certificate "repository"](src/azure_certificate_repository.py)
-* [Empty credentials for connecting to Lowkey Vault](tests/noop_credential.py)
+* [Empty credentials for connecting to Lowkey Vault](tests/noop_credential.py) (not needed if [Assumed Identity](https://github.com/nagyesta/assumed-identity) is used)
 * [Tests](tests/test.py)
+  * TestRepository is using [NoopCredential](tests/noop_credential.py) for authentication to demonstrate integration with
+    * Secrets
+    * Keys
+    * Certificates
+  * TestRepositoryWithManagedIdentity is performing exactly the same but, it is using the DefaultAzureCredential with [Assumed Identity](https://github.com/nagyesta/assumed-identity)
 
 ### Usage
 
-1. Start Lowkey Vault 
-   1. Either by following the steps [here](https://github.com/nagyesta/lowkey-vault#quick-start-guide).
+1. Start [Lowkey Vault](https://github.com/nagyesta/lowkey-vault) and [Assumed Identity](https://github.com/nagyesta/assumed-identity)
+   1. Either by following the steps [here](https://github.com/nagyesta/lowkey-vault#quick-start-guide) and [here](https://github.com/nagyesta/assumed-identity#usage).
    2. Or running ```docker-compose up -d```
 2. Set ```REQUESTS_CA_BUNDLE``` environment variable to reference [lowkeyvault.pem](lowkeyvault.pem)
-3. Run the tests
+3. If you are not using the default `169.254.169.254:80` address for Assumed Identity (because for example you are running it in the cloud)
+   1. Set ```AZURE_POD_IDENTITY_AUTHORITY_HOST``` environment variable to point to the Assumed Identity base URL e.g., http://localhost:8080
+   2. Set ```IMDS_ENDPOINT``` environment variable to point to the Assumed Identity base URL e.g., http://localhost:8080
+   3. Set ```IDENTITY_ENDPOINT``` environment variable to point to the `/metadata/identity/oauth2/token` path of Assumed Identity e.g., http://localhost:8080/metadata/identity/oauth2/token
+4. Run the tests
 
 Note: In order to better understand what is needed in general to make similar examples work, please find a generic overview 
 [here](https://github.com/nagyesta/lowkey-vault/wiki/Example:-How-can-you-use-Lowkey-Vault-in-your-tests).
