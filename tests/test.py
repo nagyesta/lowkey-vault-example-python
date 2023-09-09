@@ -25,7 +25,7 @@ class TestRepository(unittest.TestCase):
             vault_url="https://localhost:8443",
             credential=credential,
             verify_challenge_resource=False,
-            api_version="7.3"
+            api_version="7.4"
         )
         key_client.create_rsa_key(
             name=key_name, size=2048, key_operations=[
@@ -54,7 +54,7 @@ class TestRepository(unittest.TestCase):
             vault_url="https://localhost:8443",
             credential=credential,
             verify_challenge_resource=False,
-            api_version="7.3"
+            api_version="7.4"
         )
         secret_client.set_secret(name=secret_database, value=database)
         secret_client.set_secret(name=secret_username, value=username)
@@ -82,13 +82,13 @@ class TestRepository(unittest.TestCase):
             vault_url="https://localhost:8443",
             credential=credential,
             verify_challenge_resource=False,
-            api_version="7.3"
+            api_version="7.4"
         )
         certificate_client: CertificateClient = CertificateClient(
             vault_url="https://localhost:8443",
             credential=credential,
             verify_challenge_resource=False,
-            api_version="7.3"
+            api_version="7.4"
         )
 
         subject_name: str = "CN=example.com"
@@ -127,7 +127,7 @@ class TestRepositoryWithManagedIdentity(unittest.TestCase):
             vault_url="https://localhost:8443",
             credential=credential,
             verify_challenge_resource=False,
-            api_version="7.3"
+            api_version="7.4"
         )
         key_client.create_rsa_key(
             name=key_name, size=2048, key_operations=[
@@ -156,7 +156,7 @@ class TestRepositoryWithManagedIdentity(unittest.TestCase):
             vault_url="https://localhost:8443",
             credential=credential,
             verify_challenge_resource=False,
-            api_version="7.3"
+            api_version="7.4"
         )
         secret_client.set_secret(name=secret_database, value=database)
         secret_client.set_secret(name=secret_username, value=username)
@@ -184,13 +184,13 @@ class TestRepositoryWithManagedIdentity(unittest.TestCase):
             vault_url="https://localhost:8443",
             credential=credential,
             verify_challenge_resource=False,
-            api_version="7.3"
+            api_version="7.4"
         )
         certificate_client: CertificateClient = CertificateClient(
             vault_url="https://localhost:8443",
             credential=credential,
             verify_challenge_resource=False,
-            api_version="7.3"
+            api_version="7.4"
         )
 
         subject_name: str = "CN=example.com"
