@@ -1,5 +1,5 @@
  azure-keyvault-certificates==4.7.0
  azure-keyvault-secrets==4.7.0
  azure-keyvault-keys==4.8.0
- cryptography==41.0.4
+ cryptography==41.0.5
  azure-identity==1.14.1
