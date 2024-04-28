@@ -35,10 +35,10 @@ store with a certificate and matching private key inside.
    3. Set ```IDENTITY_ENDPOINT``` environment variable to point to the `/metadata/identity/oauth2/token` path of Assumed Identity e.g., http://localhost:8080/metadata/identity/oauth2/token
 4. Run the tests
 
-Note: In order to better understand what is needed in general to make similar examples work, please find a generic overview 
+> [!NOTE]
+> In order to better understand what is needed in general to make similar examples work, please find a generic overview 
 [here](https://github.com/nagyesta/lowkey-vault/wiki/Example:-How-can-you-use-Lowkey-Vault-in-your-tests).
 
-### Note
+> [!TIP]
+> Since v2.4.2, Lowkey Vault is providing the same token endpoint on the `8080` port by default. Therefore, you don't need to start another container.
 
-I am not a professional Python developer. Please do not judge me by the code quality. I am open to any suggestions and
-improvements.
