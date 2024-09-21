@@ -33,6 +33,7 @@ store with a certificate and matching private key inside.
    1. Set ```AZURE_POD_IDENTITY_AUTHORITY_HOST``` environment variable to point to the Assumed Identity base URL e.g., http://localhost:8080
    2. Set ```IMDS_ENDPOINT``` environment variable to point to the Assumed Identity base URL e.g., http://localhost:8080
    3. Set ```IDENTITY_ENDPOINT``` environment variable to point to the `/metadata/identity/oauth2/token` path of Assumed Identity e.g., http://localhost:8080/metadata/identity/oauth2/token
+   4. Create an empty file named ```/var/opt/azcmagent/tokens/assumed-identity.key``` to let the client think that you are using Azure Arc for Managed Identity
 4. Run the tests
 
 > [!NOTE]
@@ -42,3 +43,5 @@ store with a certificate and matching private key inside.
 > [!TIP]
 > Since v2.4.2, Lowkey Vault is providing the same token endpoint on the `8080` port by default. Therefore, you don't need to start another container.
 
+> [!NOTE]
+> To be able to use Azure Identity 1.18.0+ you must use Lowkey Vault 2.5.0+ as earlier versions don't provide the necessary headers in the token response.
