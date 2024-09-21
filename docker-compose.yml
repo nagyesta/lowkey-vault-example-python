@@ -2,10 +2,19 @@ version: "2"
 
 services:
   lowkey-vault:
-    container_name: lowkey-vault-python
+    container_name: lowkey-vault
     image: nagyesta/lowkey-vault:2.5.0@sha256:d5c9d340197c9ee52048f46fa3ba3955435883332430bcc19e0e9b7c451197e8
-    ports:
-      - "8080:8080"
-      - "8443:8443"
+   # ports:
+   #   - "8080:8080"
+   #   - "8443:8443"
     environment:
-      LOWKEY_ARGS: "--server.port=8443 --app.token.port=8080"
+      LOWKEY_ARGS: "--server.port=8443 --app.token.port=8080 --LOWKEY_VAULT_ALIASES=localhost=lowkey-vault:8443"
+
+    # define a network to let us access the container from another compose file
+    networks:
+      - lowkey-vault-python-net
+
+networks:
+  lowkey-vault-python-net:
+    name: lowkey-vault-python-net
+    driver: bridge
