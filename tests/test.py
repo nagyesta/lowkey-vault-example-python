@@ -1,3 +1,4 @@
+import os
 import unittest
 
 from azure.core.credentials import TokenCredential
@@ -14,6 +15,10 @@ from src.azure_key_repository import AzureKeyRepository
 from src.azure_secret_repository import AzureSecretRepository
 
 
+lowkey_vault_url: str = os.environ.get("LOWKEY_VAULT_URL")
+if not lowkey_vault_url:
+    lowkey_vault_url = "https://localhost:8443"
+
 class TestRepository(unittest.TestCase):
 
     def test_calling_encrypt_then_decrypt_should_return_original_input_when_called(self):
@@ -22,7 +27,7 @@ class TestRepository(unittest.TestCase):
         key_name: str = "rsa-key"
         credential: TokenCredential = NoopCredential()
         key_client: KeyClient = KeyClient(
-            vault_url="https://localhost:8443",
+            vault_url=lowkey_vault_url,
             credential=credential,
             verify_challenge_resource=False,
             api_version="7.4"
@@ -51,7 +56,7 @@ class TestRepository(unittest.TestCase):
         password: str = "s3cr3t"
         credential: TokenCredential = NoopCredential()
         secret_client: SecretClient = SecretClient(
-            vault_url="https://localhost:8443",
+            vault_url=lowkey_vault_url,
             credential=credential,
             verify_challenge_resource=False,
             api_version="7.4"
@@ -79,13 +84,13 @@ class TestRepository(unittest.TestCase):
         certificate_name: str = "certificate"
         credential: TokenCredential = NoopCredential()
         secret_client: SecretClient = SecretClient(
-            vault_url="https://localhost:8443",
+            vault_url=lowkey_vault_url,
             credential=credential,
             verify_challenge_resource=False,
             api_version="7.4"
         )
         certificate_client: CertificateClient = CertificateClient(
-            vault_url="https://localhost:8443",
+            vault_url=lowkey_vault_url,
             credential=credential,
             verify_challenge_resource=False,
             api_version="7.4"
@@ -124,7 +129,7 @@ class TestRepositoryWithManagedIdentity(unittest.TestCase):
         key_name: str = "rsa-key"
         credential = DefaultAzureCredential()  # Will use Managed Identity via the Assumed Identity container
         key_client: KeyClient = KeyClient(
-            vault_url="https://localhost:8443",
+            vault_url=lowkey_vault_url,
             credential=credential,
             verify_challenge_resource=False,
             api_version="7.4"
@@ -151,9 +156,10 @@ class TestRepositoryWithManagedIdentity(unittest.TestCase):
         database: str = "db"
         username: str = "admin"
         password: str = "s3cr3t"
+
         credential = DefaultAzureCredential()  # Will use Managed Identity via the Assumed Identity container
         secret_client: SecretClient = SecretClient(
-            vault_url="https://localhost:8443",
+            vault_url=lowkey_vault_url,
             credential=credential,
             verify_challenge_resource=False,
             api_version="7.4"
@@ -181,13 +187,13 @@ class TestRepositoryWithManagedIdentity(unittest.TestCase):
         certificate_name: str = "certificate"
         credential = DefaultAzureCredential()  # Will use Managed Identity via the Assumed Identity container
         secret_client: SecretClient = SecretClient(
-            vault_url="https://localhost:8443",
+            vault_url=lowkey_vault_url,
             credential=credential,
             verify_challenge_resource=False,
             api_version="7.4"
         )
         certificate_client: CertificateClient = CertificateClient(
-            vault_url="https://localhost:8443",
+            vault_url=lowkey_vault_url,
             credential=credential,
             verify_challenge_resource=False,
             api_version="7.4"
