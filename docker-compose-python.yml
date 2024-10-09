@@ -3,6 +3,35 @@ version: "2"
 services:
   python-3-12:
     container_name: python-3-12-test
+    image: python:3.12.7-bookworm@sha256:c7e6862f608cc58149ed6900a3f27ea3424661819cd610d010526ec6fc2e52a6
+    working_dir: /app
+    volumes:
+      - ./src:/app/src
+      - ./tests:/app/tests
+      - ./requirements.txt:/app/requirements.txt
+      - ./lowkeyvault.pem:/app/lowkeyvault.pem
+    entrypoint: [ "/bin/sh", "-c" ]
+    command:
+      - |
+        mkdir -p /var/opt/azcmagent/tokens/
+        touch /var/opt/azcmagent/tokens/assumed-identity.key
+        python -m venv ./venv
+        python -m pip install --upgrade pip 
+        python -m pip install pytest
+        pip install -r requirements.txt 
+        python -m pytest tests/test.py
+    environment:
+      REQUESTS_CA_BUNDLE: lowkeyvault.pem
+      AZURE_POD_IDENTITY_AUTHORITY_HOST: http://lowkey-vault:8080
+      IDENTITY_ENDPOINT: http://lowkey-vault:8080/metadata/identity/oauth2/token
+      IMDS_ENDPOINT: http://lowkey-vault:8080
+      LOWKEY_VAULT_URL: https://lowkey-vault:8443
+
+    # use the previously defined network to let us access the lowkey-vault container
+    networks:
+      - lowkey-vault-python-net
+  python-3-13:
+    container_name: python-3-12-test
     image: python:3.13.0-bookworm@sha256:a680a0edc77501edf235bcc10e81b23269b7320bbf6067b457534cf199007601
     working_dir: /app
     volumes:
