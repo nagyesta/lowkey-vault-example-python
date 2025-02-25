@@ -32,7 +32,7 @@ services:
       - lowkey-vault-python-net
   python-3-13:
     container_name: python-3-13-test
-    image: python:3.13.2-bookworm@sha256:4800e1e55e934a747df67834ada9d23f482a6c472a86c7f084e6efbfbf81773c
+    image: python:3.13.2-bookworm@sha256:63709799b5c3cfde39da94d4adb5ba569fd443da5fb64fe21593d0c797be1a0e
     working_dir: /app
     volumes:
       - ./src:/app/src
