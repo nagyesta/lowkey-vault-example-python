@@ -3,7 +3,7 @@ version: "2"
 services:
   python-3-12:
     container_name: python-3-12-test
-    image: python:3.12.7-bookworm@sha256:78c6833ca878fd221957db5d580f7f2e9e31265b38656e97368caf23f12e24c8
+    image: python:3.13.2-bookworm@sha256:0ec058bc44540b8a965a0599fb8ff4cef431641c13537452cd9d0e2cf4b9db9c
     working_dir: /app
     volumes:
       - ./src:/app/src
