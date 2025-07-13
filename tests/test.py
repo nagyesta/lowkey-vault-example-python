@@ -2,6 +2,7 @@ import os
 import unittest
 
 from azure.core.credentials import TokenCredential
+from azure.core.pipeline.transport._requests_basic import RequestsTransport
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.certificates import CertificateClient, CertificatePolicy
 from azure.keyvault.keys import KeyClient, KeyOperation
@@ -25,12 +26,15 @@ class TestRepository(unittest.TestCase):
         # given
         secret_message: str = "a secret message"
         key_name: str = "rsa-key"
+        # ignore SSL errors because we are using a self-signed certificate
+        transport = RequestsTransport(connection_verify=False)
         credential: TokenCredential = NoopCredential()
         key_client: KeyClient = KeyClient(
             vault_url=lowkey_vault_url,
             credential=credential,
             verify_challenge_resource=False,
-            api_version="7.4"
+            transport=transport,
+            api_version="7.6"
         )
         key_client.create_rsa_key(
             name=key_name, size=2048, key_operations=[
@@ -54,12 +58,15 @@ class TestRepository(unittest.TestCase):
         database: str = "db"
         username: str = "admin"
         password: str = "s3cr3t"
+        # ignore SSL errors because we are using a self-signed certificate
+        transport = RequestsTransport(connection_verify=False)
         credential: TokenCredential = NoopCredential()
         secret_client: SecretClient = SecretClient(
             vault_url=lowkey_vault_url,
             credential=credential,
             verify_challenge_resource=False,
-            api_version="7.4"
+            transport=transport,
+            api_version="7.6"
         )
         secret_client.set_secret(name=secret_database, value=database)
         secret_client.set_secret(name=secret_username, value=username)
@@ -82,18 +89,22 @@ class TestRepository(unittest.TestCase):
     def test_get_certificate_and_get_key_should_return_generated_cert_and_key_when_called(self):
         # given
         certificate_name: str = "certificate"
+        # ignore SSL errors because we are using a self-signed certificate
+        transport = RequestsTransport(connection_verify=False)
         credential: TokenCredential = NoopCredential()
         secret_client: SecretClient = SecretClient(
             vault_url=lowkey_vault_url,
             credential=credential,
             verify_challenge_resource=False,
-            api_version="7.4"
+            transport=transport,
+            api_version="7.6"
         )
         certificate_client: CertificateClient = CertificateClient(
             vault_url=lowkey_vault_url,
             credential=credential,
             verify_challenge_resource=False,
-            api_version="7.4"
+            transport=transport,
+            api_version="7.6"
         )
 
         subject_name: str = "CN=example.com"
@@ -127,12 +138,15 @@ class TestRepositoryWithManagedIdentity(unittest.TestCase):
         # given
         secret_message: str = "a secret message"
         key_name: str = "rsa-key"
+        # ignore SSL errors because we are using a self-signed certificate
+        transport = RequestsTransport(connection_verify=False)
         credential = DefaultAzureCredential()  # Will use Managed Identity via the Assumed Identity container
         key_client: KeyClient = KeyClient(
             vault_url=lowkey_vault_url,
             credential=credential,
             verify_challenge_resource=False,
-            api_version="7.4"
+            transport=transport,
+            api_version="7.6"
         )
         key_client.create_rsa_key(
             name=key_name, size=2048, key_operations=[
@@ -156,13 +170,15 @@ class TestRepositoryWithManagedIdentity(unittest.TestCase):
         database: str = "db"
         username: str = "admin"
         password: str = "s3cr3t"
-
+        # ignore SSL errors because we are using a self-signed certificate
+        transport = RequestsTransport(connection_verify=False)
         credential = DefaultAzureCredential()  # Will use Managed Identity via the Assumed Identity container
         secret_client: SecretClient = SecretClient(
             vault_url=lowkey_vault_url,
             credential=credential,
             verify_challenge_resource=False,
-            api_version="7.4"
+            transport=transport,
+            api_version="7.6"
         )
         secret_client.set_secret(name=secret_database, value=database)
         secret_client.set_secret(name=secret_username, value=username)
@@ -185,18 +201,22 @@ class TestRepositoryWithManagedIdentity(unittest.TestCase):
     def test_get_certificate_and_get_key_should_return_generated_cert_and_key_when_called(self):
         # given
         certificate_name: str = "certificate"
+        # ignore SSL errors because we are using a self-signed certificate
+        transport = RequestsTransport(connection_verify=False)
         credential = DefaultAzureCredential()  # Will use Managed Identity via the Assumed Identity container
         secret_client: SecretClient = SecretClient(
             vault_url=lowkey_vault_url,
             credential=credential,
             verify_challenge_resource=False,
-            api_version="7.4"
+            transport=transport,
+            api_version="7.6"
         )
         certificate_client: CertificateClient = CertificateClient(
             vault_url=lowkey_vault_url,
             credential=credential,
             verify_challenge_resource=False,
-            api_version="7.4"
+            transport=transport,
+            api_version="7.6"
         )
 
         subject_name: str = "CN=example.com"

@@ -9,7 +9,6 @@ services:
       - ./src:/app/src
       - ./tests:/app/tests
       - ./requirements.txt:/app/requirements.txt
-      - ./lowkeyvault.pem:/app/lowkeyvault.pem
     entrypoint: [ "/bin/sh", "-c" ]
     command:
       - |
@@ -21,7 +20,6 @@ services:
         pip install -r requirements.txt 
         python -m pytest tests/test.py
     environment:
-      REQUESTS_CA_BUNDLE: lowkeyvault.pem
       AZURE_POD_IDENTITY_AUTHORITY_HOST: http://lowkey-vault:8080
       IDENTITY_ENDPOINT: http://lowkey-vault:8080/metadata/identity/oauth2/token
       IMDS_ENDPOINT: http://lowkey-vault:8080
