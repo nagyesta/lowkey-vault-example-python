@@ -28,13 +28,12 @@ store with a certificate and matching private key inside.
 1. Start [Lowkey Vault](https://github.com/nagyesta/lowkey-vault) and [Assumed Identity](https://github.com/nagyesta/assumed-identity)
    1. Either by following the steps [here](https://github.com/nagyesta/lowkey-vault#quick-start-guide) and [here](https://github.com/nagyesta/assumed-identity#usage).
    2. Or running ```docker-compose up -d```
-2. Set ```REQUESTS_CA_BUNDLE``` environment variable to reference [lowkeyvault.pem](lowkeyvault.pem)
-3. If you are not using the default `169.254.169.254:80` address for Assumed Identity (because for example you are running it in the cloud)
+2. If you are not using the default `169.254.169.254:80` address for Assumed Identity (because for example you are running it in the cloud)
    1. Set ```AZURE_POD_IDENTITY_AUTHORITY_HOST``` environment variable to point to the Assumed Identity base URL e.g., http://localhost:8080
    2. Set ```IMDS_ENDPOINT``` environment variable to point to the Assumed Identity base URL e.g., http://localhost:8080
    3. Set ```IDENTITY_ENDPOINT``` environment variable to point to the `/metadata/identity/oauth2/token` path of Assumed Identity e.g., http://localhost:8080/metadata/identity/oauth2/token
    4. Create an empty file named ```/var/opt/azcmagent/tokens/assumed-identity.key``` to let the client think that you are using Azure Arc for Managed Identity
-4. Run the tests
+3. Run the tests
 
 > [!NOTE]
 > In order to better understand what is needed in general to make similar examples work, please find a generic overview 
