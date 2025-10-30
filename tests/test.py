@@ -1,11 +1,13 @@
 import os
 import unittest
 
+import urllib3
 from azure.core.credentials import TokenCredential
 from azure.core.pipeline.transport._requests_basic import RequestsTransport
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.certificates import CertificateClient, CertificatePolicy
 from azure.keyvault.keys import KeyClient, KeyOperation
+from azure.keyvault.keys.crypto import CryptographyClient
 from azure.keyvault.secrets import SecretClient
 from cryptography.hazmat.primitives.asymmetric.ec import EllipticCurvePrivateKey
 from cryptography.x509 import Certificate
@@ -27,13 +29,14 @@ class TestRepository(unittest.TestCase):
         secret_message: str = "a secret message"
         key_name: str = "rsa-key"
         # ignore SSL errors because we are using a self-signed certificate
-        transport = RequestsTransport(connection_verify=False)
+        transport_keys = RequestsTransport(connection_verify=False)
+        transport_crypto = RequestsTransport(connection_verify=False)
         credential: TokenCredential = NoopCredential()
         key_client: KeyClient = KeyClient(
             vault_url=lowkey_vault_url,
             credential=credential,
             verify_challenge_resource=False,
-            transport=transport,
+            transport=transport_keys,
             api_version="7.6"
         )
         key_client.create_rsa_key(
@@ -41,13 +44,20 @@ class TestRepository(unittest.TestCase):
                 KeyOperation.encrypt, KeyOperation.decrypt, KeyOperation.wrap_key, KeyOperation.unwrap_key])
         under_test: AzureKeyRepository = AzureKeyRepository(
             key_client=key_client, credential=credential, key_name=key_name)
+        crypto_client: CryptographyClient = CryptographyClient(
+            key=under_test.get_key_id(),
+            credential=credential,
+            verify_challenge_resource=False,
+            api_version="7.6",
+            transport=transport_crypto)
 
         # when
-        encrypted: bytes = under_test.encrypt(clear_text=secret_message)
-        decrypted: str = under_test.decrypt(cipher_text=encrypted)
+        encrypted: bytes = under_test.encrypt(clear_text=secret_message, client=crypto_client)
+        decrypted: str = under_test.decrypt(cipher_text=encrypted, client=crypto_client)
 
         # then
         key_client.close()
+        crypto_client.close()
         self.assertEqual(secret_message, decrypted)
 
     def test_get_database_username_and_password_should_return_original_input_when_called(self):
@@ -90,20 +100,21 @@ class TestRepository(unittest.TestCase):
         # given
         certificate_name: str = "certificate"
         # ignore SSL errors because we are using a self-signed certificate
-        transport = RequestsTransport(connection_verify=False)
+        transport_secrets = RequestsTransport(connection_verify=False)
+        transport_certs = RequestsTransport(connection_verify=False)
         credential: TokenCredential = NoopCredential()
         secret_client: SecretClient = SecretClient(
             vault_url=lowkey_vault_url,
             credential=credential,
             verify_challenge_resource=False,
-            transport=transport,
+            transport=transport_secrets,
             api_version="7.6"
         )
         certificate_client: CertificateClient = CertificateClient(
             vault_url=lowkey_vault_url,
             credential=credential,
             verify_challenge_resource=False,
-            transport=transport,
+            transport=transport_certs,
             api_version="7.6"
         )
 
@@ -139,13 +150,14 @@ class TestRepositoryWithManagedIdentity(unittest.TestCase):
         secret_message: str = "a secret message"
         key_name: str = "rsa-key"
         # ignore SSL errors because we are using a self-signed certificate
-        transport = RequestsTransport(connection_verify=False)
+        transport_keys = RequestsTransport(connection_verify=False)
+        transport_crypto = RequestsTransport(connection_verify=False)
         credential = DefaultAzureCredential()  # Will use Managed Identity via the Assumed Identity container
         key_client: KeyClient = KeyClient(
             vault_url=lowkey_vault_url,
             credential=credential,
             verify_challenge_resource=False,
-            transport=transport,
+            transport=transport_keys,
             api_version="7.6"
         )
         key_client.create_rsa_key(
@@ -153,13 +165,20 @@ class TestRepositoryWithManagedIdentity(unittest.TestCase):
                 KeyOperation.encrypt, KeyOperation.decrypt, KeyOperation.wrap_key, KeyOperation.unwrap_key])
         under_test: AzureKeyRepository = AzureKeyRepository(
             key_client=key_client, credential=credential, key_name=key_name)
+        crypto_client: CryptographyClient = CryptographyClient(
+            key=under_test.get_key_id(),
+            credential=credential,
+            verify_challenge_resource=False,
+            api_version="7.6",
+            transport=transport_crypto)
 
         # when
-        encrypted: bytes = under_test.encrypt(clear_text=secret_message)
-        decrypted: str = under_test.decrypt(cipher_text=encrypted)
+        encrypted: bytes = under_test.encrypt(clear_text=secret_message, client=crypto_client)
+        decrypted: str = under_test.decrypt(cipher_text=encrypted, client=crypto_client)
 
         # then
         key_client.close()
+        crypto_client.close()
         self.assertEqual(secret_message, decrypted)
 
     def test_get_database_username_and_password_should_return_original_input_when_called(self):
@@ -202,20 +221,21 @@ class TestRepositoryWithManagedIdentity(unittest.TestCase):
         # given
         certificate_name: str = "certificate"
         # ignore SSL errors because we are using a self-signed certificate
-        transport = RequestsTransport(connection_verify=False)
+        transport_secrets = RequestsTransport(connection_verify=False)
+        transport_certs = RequestsTransport(connection_verify=False)
         credential = DefaultAzureCredential()  # Will use Managed Identity via the Assumed Identity container
         secret_client: SecretClient = SecretClient(
             vault_url=lowkey_vault_url,
             credential=credential,
             verify_challenge_resource=False,
-            transport=transport,
+            transport=transport_secrets,
             api_version="7.6"
         )
         certificate_client: CertificateClient = CertificateClient(
             vault_url=lowkey_vault_url,
             credential=credential,
             verify_challenge_resource=False,
-            transport=transport,
+            transport=transport_certs,
             api_version="7.6"
         )
 
@@ -245,4 +265,5 @@ class TestRepositoryWithManagedIdentity(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    urllib3.disable_warnings()
     unittest.main()
