@@ -16,7 +16,7 @@ services:
 
   python:
     container_name: python-test
-    image: python:3.14.3-bookworm@sha256:f357fca37376cc10aba3bb909d13bba0108a39670d7b9bc8b4039ac94674e874
+    image: python:3.14.3-bookworm@sha256:084a6aca614be8c886f856f671010adeb3658b1bf64b76bbcb81eeca28bf46e0
     working_dir: /app
     volumes:
       - ./src:/app/src
