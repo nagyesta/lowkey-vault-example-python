@@ -3,7 +3,7 @@ version: "2"
 services:
   lowkey-vault:
     container_name: lowkey-vault
-    image: nagyesta/lowkey-vault:7.2.26@sha256:24dcbde6fecfee3c3bf2254eb8cabc6917facc28150ceeaa3c8f50f9d5d6aa3c
+    image: nagyesta/lowkey-vault:7.3.0@sha256:00128e02fe9f1b731b96d9d089e979758fb938f09468179e08b1ee48cd551b41
    # ports:
    #   - "8080:8080"
    #   - "8443:8443"
@@ -16,7 +16,7 @@ services:
 
   python:
     container_name: python-test
-    image: python:3.14.5-bookworm@sha256:d1552003e0eb6e4a2c57fcc17c1b1f14fca6b00b1b709bb0e4eb82f21bce5c8c
+    image: python:3.14.6-bookworm@sha256:601bab1661920dfc3bcd35f4af1ca5df6b0b1385be45adc65baa6c02ab15f110
     working_dir: /app
     volumes:
       - ./src:/app/src
